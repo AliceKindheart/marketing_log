@@ -208,7 +208,7 @@ exports.showy = function(req, res) {
 exports.all = function(req, res) {
     console.log("exports.all for contacts happened");
     
-    db.Contact.findAll({include: [{model: db.Company}, {model: db.Tag}], order: "Contact_firstname"}).then(function(contacts){
+    db.Contact.findAll({include: [{model: db.Company}, {model: db.Tag}], order: "Contact_lastname"}).then(function(contacts){
         console.log("CCCCCContacts");
         return res.jsonp(contacts);
     }).catch(function(err){
