@@ -19,6 +19,7 @@
     "postinstall": "bower install && cp config/env/development.json5.sample config/env/development.json5 && cp config/env/production.json5.sample config/env/production.json5 && node node_modules/grunt-cli/bin/grunt copy"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.1.4",
     "angularjs-datepicker": "^2.1.23",
     "async": "latest",
     "body-parser": "^1.14.1",
@@ -26,8 +27,8 @@
     "compression": "^1.6.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.0",
-    "express": "4.15.4",
     "datepicker": "0.0.0",
+    "express": "4.15.4",
     "express-sequelize-session": "^0.4.0",
     "express-session": "^1.12.1",
     "glob": "^6.0.1",

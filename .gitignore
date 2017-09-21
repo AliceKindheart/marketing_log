@@ -44,3 +44,4 @@ node_modules
 *.swp
 *.swo
 pretend_db.sql
+sendgrid.env
