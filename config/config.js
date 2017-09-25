@@ -7,8 +7,7 @@ var nconf = require('nconf'),
     path = require('path'),
     fs = require('fs'),
     StandardError = require('standard-error'),
-    sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    
 
 
 
