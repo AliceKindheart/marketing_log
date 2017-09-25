@@ -5,6 +5,15 @@
  */
 var StandardError = require('standard-error');
 var db = require('../../config/sequelize');
+var sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+exports.gridemail = function(req, res){
+    var msg = req.params.msg;
+    sgMail.send(msg);
+    return res.jsonp(msg);
+};
 /**
  * List of Events
  */

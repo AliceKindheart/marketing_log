@@ -732,18 +732,26 @@ angular.module('mean.events').controller('EventController', ['$window', '$filter
         }
     };
 
-    var sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);    
+        
     
     $scope.sendgridemail= function(){
-        var msg = {
+        $scope.msg = {
           to: 'moonstonecowgirl@gmail.com',
           from: 'test@example.com',
           subject: 'Sending with SendGrid is Fun',
           text: 'and easy to do anywhere, even with Node.js',
           html: '<strong>and easy to do anywhere, even with Node.js</strong>',
         };
-        sgMail.send(msg);
+
+        $http({
+            method: 'GET',
+            url: 'gridemail',
+            params: {msg: $stateParams.msg}
+        }).then(function(resp){
+            $scope.resp=resp.data;
+            console.log("resp", $scope.resp);
+        });
+        
     };
 
 }]);
