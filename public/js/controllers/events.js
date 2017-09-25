@@ -733,7 +733,7 @@ angular.module('mean.events').controller('EventController', ['$window', '$filter
     };
 
     var sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);    
     
     $scope.sendgridemail= function(){
         var msg = {

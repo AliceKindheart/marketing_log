@@ -6,8 +6,8 @@ var nconf = require('nconf'),
     glob = require('glob'),
     path = require('path'),
     fs = require('fs'),
-    StandardError = require('standard-error'),
-    
+    StandardError = require('standard-error');
+
 
 
 
