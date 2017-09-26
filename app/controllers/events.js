@@ -5,14 +5,19 @@
  */
 var StandardError = require('standard-error');
 var db = require('../../config/sequelize');
-var sgMail = require('@sendgrid/mail');
+var sg = require('@sendgrid/mail');
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sg.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.gridemail = function(req, res){
-    var msg = req.params.msg;
+    var msg = {
+        to: 'test@example.com',
+        from: 'test@example.com',
+        subject: 'Sending with SendGrid is Fun',
+        test: 'and easy to do anywhere, even with Node.js',
+        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    };
     sgMail.send(msg);
-    return res.jsonp(msg);
 };
 /**
  * List of Events
