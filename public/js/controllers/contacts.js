@@ -132,6 +132,7 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
         var arrayoftagobjects = [];
 
         Contacts.query(function(contacts) {
+            console.log("CONTACTSSSSS: ", contacts);
             $scope.contacts = contacts;
             var companies = [];
 
