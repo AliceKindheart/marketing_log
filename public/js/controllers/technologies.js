@@ -421,8 +421,8 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
 
     $scope.mymarketing = function(){
         $scope.showall = false;
-        if($scope.global.user.admin===true){
-            console.log("TRUE");
+        if($scope.global.user.intern!==null){
+           // console.log("TRUE");
             $scope.internid=[];
             $http({
                 method: "GET", 
@@ -588,7 +588,7 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
         $scope.companies=[];
         $scope.arrayofarrayofcontacts=[];
 
-        if($scope.global.user.admin===true){
+        if($scope.global.user.intern!==null){
             console.log("TRUtueE");
             $scope.internid=[];
             $http({

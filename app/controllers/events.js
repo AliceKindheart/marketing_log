@@ -193,8 +193,9 @@ exports.getcontactsforevents = function(req,res){
 
 exports.getem = function(req,res){
    // console.log("THEHEHTHT:SWEKT", req.query, req.user);
-  // console.log("REQqqqqqqqqqqqqqqq.query", req.query);
+   console.log("REQqqqqqqqqqqqqqqq.query", req.query);
     var internid = [];
+    console.log("REQQQQQ.query.internid: ", req.query.internid);
     //console.log(typeof req.query.internid);
     if(typeof req.query.internid==="string"){
       //  console.log("number!!!!");

@@ -281,15 +281,14 @@ exports.usercampaigns = function(req,res){
 };
 
 exports.getinterninfo = function(req,res){
-  //  console.log("hellow wast this even calllllllllllllllllled?????????????");
-    //console.log("req.query", req.query);
+    console.log("hellow wast this even calllllllllllllllllled?????????????");
+    console.log("req.query", req.query);
     db.User.findOne({where: {id: req.query.id}})
         .then(function(user){
           //  console.log("USERERERERERER", user);
-            user.getInterns().then(function(user){
-              //  console.log("USERRRRRRRRRRRRRRRRR", user);
-                return res.jsonp(user);
-            });
+            user.getInterns();
+            console.log("USERRRRRRRRRRRRRRRRR", user);
+            return res.jsonp(user);
         }).catch(function(err){
             return res.send({
                 errors: err, 

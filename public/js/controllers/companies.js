@@ -117,6 +117,7 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
         var arrayoftagobjects = [];
 
         Companies.query(function(companies) {
+            console.log("COMPANIESRECEIVED: ", companies);
             $scope.companies = companies;
 
             companies.forEach(function(company){

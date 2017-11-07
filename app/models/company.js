@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 
 	var Company = sequelize.define('Company', {	
 			Company_name: DataTypes.STRING,
-			//Company_email: DataTypes.STRING,
+			Company_email: DataTypes.STRING,
 			Company_phone: DataTypes.STRING,
 			Notes: DataTypes.STRING,
 		},{

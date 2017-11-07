@@ -1,11 +1,17 @@
 {
     // This is your MYSQL Database configuration
     db: {
-        name: "pretend_db",
-        password: "techtransfer",
-        username: "techtransfer",
-        host: "129.85.127.106",
-        port: 3306
+        //name: "pretend_db",
+        //password: "techtransfer",
+        //username: "techtransfer",
+        //host: "129.85.127.104",
+        //port: 3306
+        //for the-zen-of-marketing (fake data)
+        name: "heroku_719c9835d7fa839",
+        password: "825f1885",
+        username: "b368d4b0f6a194",
+        host:"us-cdbr-iron-east-04.cleardb.net",
+        port:3306
     },
     app: {
         name: "Marketing Log for Tech Transfer"
