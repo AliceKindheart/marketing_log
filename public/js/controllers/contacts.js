@@ -88,25 +88,28 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
             }
         
             if(contact.Tags.length!==0){
-                tagarray = contact.Tags;
+                //tagarray = contact.Tags;
+                contact.Tags.forEach(function(tag){
+                    tags.push(tag.Tag_name);
+                });
             } else {
-                tagarray.push({Tag_name:"None"});
+                tags.push({Tag_name:"None"});
             }
-            console.log("did this thing even happen?");
+            console.log("did this thing even happen?", tags);
+            $scope.vartags=tags.join(", ");
             
-            tagarray.forEach(function(tag){
-                tags.push(tag.Tag_name);
-            });
+            
 
             $scope.whatyouneed = tags;
             whatyouneed = $scope.whatyouneed;
-            console.log("tags", tags);
+            //console.log("vartags", vartags);
+            $scope.tags=$scope.vartags;
         
-            $scope.tagnamest = tags.join(", ");
+            $scope.tagnames1 = $scope.tags;
             console.log("$scope.tagnames1", $scope.tagnames);
             $scope.findtags();
             console.log("$scope.tagnames", $scope.tagnames);
-            $scope.selected = $scope.tagnamest;
+            $scope.selected = $scope.tagnames1;
             console.log("selected, ", $scope.selected);
         });
         
@@ -146,12 +149,14 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
             });
 
             contacts.forEach(function(contact){
-                if(contact.Tags){
+                if(contact.Tags.length!==0){
+                    console.log("HELLLLLOWOWOWOWO");
                     arrayofarrayoftagobjects.push(contact.Tags);
                 } else {
                     arrayofarrayoftagobjects.push([{Tag_name: "None"}]);
                 }
             });
+            console.log("arrayofarrayoftagobjects", arrayofarrayoftagobjects);
 
             var tags = [];
             var arrayoftags = [];
@@ -163,13 +168,16 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
                 arrayoftags.push(tags);   
                 tags = [];  
             });
+            console.log("arrayoftags: ", arrayoftags);
 
             var arrayoftagnames = [];
             var stringoftagnames;
-            arrayoftags = arrayoftags.forEach(function(array){
+            arrayoftags.forEach(function(array){
                 stringoftagnames = array.join(", ");
+                console.log("stringoftagnames", stringoftagnames);
                 arrayoftagnames.push(stringoftagnames);
             });
+            console.log("arrayoftagnames: ", arrayoftagnames);
 
             $scope.tags=arrayoftagnames;
         });
