@@ -41,8 +41,6 @@ app.route('/findkomp')
 	.get(events.findkomp);
 app.route('/geteventinfo')
 	.get(events.geteventinfo);
-app.route('/gridemail')
-	.get(events.gridemail);
 
 
 

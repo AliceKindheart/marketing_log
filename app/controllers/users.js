@@ -39,7 +39,7 @@ exports.changepassword = function(req,res){
  * Create user
  */
 exports.create = function(req, res, next) {
-  //console.log("CREATECALLD");
+  console.log("CREATECALLD", req.body);
     var message = null;
 
     var user = db.User.build(req.body);
@@ -57,12 +57,12 @@ exports.create = function(req, res, next) {
           //}).then(function(adv){
             if(req.body.advisor){
               console.log("HEELELEEEEEEEEEEEE");
-              user.setAdvisor(req.body.advisor.id);
+              user.setAdvisor(req.body.advisor);
 
               //req.body.advisor.addIntern(user.id);
               db.User.findOne({where: {id: req.body.advisor.id}
                 }).then(function(adv){
-                  console.log("FOUNDTHEADVISORHERE", user);
+                  console.log("FOUNDTHEADVISORHERE", adv);
                   adv.addIntern(user);
                 });
               }

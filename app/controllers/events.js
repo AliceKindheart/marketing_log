@@ -5,20 +5,7 @@
  */
 var StandardError = require('standard-error');
 var db = require('../../config/sequelize');
-var sg = require('@sendgrid/mail');
 
-sg.setApiKey(process.env.SENDGRID_API_KEY);
-
-exports.gridemail = function(req, res){
-    var msg = {
-        to: 'test@example.com',
-        from: 'test@example.com',
-        subject: 'Sending with SendGrid is Fun',
-        test: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    };
-    sgMail.send(msg);
-};
 /**
  * List of Events
  */
@@ -60,13 +47,6 @@ exports.create = function(req, res) {
                     event.setTechnology(tek, {through: 'TechEvents'});
                     event.setCompany(comp, {through:'CompanyEvents'});
                     comp.addEvent(event, {through:"CompanyEvents"});
-
-                    //req.body.Contacts.forEach(function(cont){
-                      //  console.log("CONTACT", cont);
-                        //event.createContact(cont, {through: 'ContactEvents'});
-
-
-                    //});
 
                     for(var i=0; i<req.body.Contacts.length; i++){
                         console.log("req.body.Contacts[i]", req.body.Contacts[i]);

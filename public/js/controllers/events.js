@@ -732,28 +732,6 @@ angular.module('mean.events').controller('EventController', ['$window', '$filter
         }
     };
 
-        
-    
-    $scope.sendgridemail= function(){
-        $scope.msg = {
-          to: 'test@example.com',
-          from: 'test@example.com',
-          subject: 'Sending with SendGrid is Fun',
-          text: 'and easy to do anywhere, even with Node.js',
-          html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-        };
-
-        $http({
-            method: 'GET',
-            url: 'gridemail',
-            params: {msg: $stateParams.msg}
-        }).then(function(resp){
-            $scope.resp=resp.data;
-            console.log("resp", $scope.resp);
-        });
-        
-    };
-
 }]);
 
 

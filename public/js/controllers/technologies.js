@@ -421,19 +421,20 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
 
     $scope.mymarketing = function(){
         $scope.showall = false;
-        if($scope.global.user.intern!==null){
-           // console.log("TRUE");
+        if($scope.global.user.Interns!==undefined){
+           console.log("INTERnS=TRUE");
+           console.log("INterns are", $scope.global.user.Interns);
             $scope.internid=[];
             $http({
                 method: "GET", 
                 url: '/getinterninfo',
                 params: {id: $scope.global.user.id}
             }).then(function(interninfo){
-    //            console.log("interninfo: ", interninfo.data);
+                console.log("interninfo: ", interninfo.data);
                 for(var x=0; x<interninfo.data.length; x++){
                     $scope.internid.push(interninfo.data[x].id);
                 }
-      //          console.log("internid", $scope.internid);
+                console.log("internid", $scope.internid);
             }).then(function(){
                  $http({
                     method: "GET",
@@ -446,8 +447,10 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                     $scope.gettagsandmarketers();
                 });
                 $scope.title = "My Active ";
+                //$scope.findEventsForFollowUp();
             });
         } else {
+            console.log("FALSEadmin")
              $http({
                     method: "GET",
                     url: '/mymarketingfornonadmins',
@@ -458,6 +461,7 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                     $scope.gettagsandmarketers();
                 });
                 $scope.title = "My Active ";
+                //$scope.findEventsForFollowUp();
         }
     };
   
@@ -588,7 +592,7 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
         $scope.companies=[];
         $scope.arrayofarrayofcontacts=[];
 
-        if($scope.global.user.intern!==null){
+        if($scope.global.user.Interns!==undefined){
             console.log("TRUtueE");
             $scope.internid=[];
             $http({

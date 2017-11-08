@@ -51,7 +51,6 @@ module.exports = function(sequelize, DataTypes) {
 
 			},
 			associate: function(models) {
-				User.hasMany(models.Article);
 				User.belongsToMany(models.Technology, {through: 'UserTechnologies'});
 				User.belongsTo(models.User, {as: 'Advisor', foreignKey: "AdvisorId"});
 				User.hasMany(models.User, {as: 'Interns', foreignKey: 'AdvisorId'});

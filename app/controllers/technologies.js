@@ -126,6 +126,7 @@ exports.searchfortech = function(req, res){
 };
 
 exports.searchformine = function(req,res){
+    console.log("REQQQQquery", req.query);
     var internid = [];
     //console.log(typeof req.query.internid);
     if(typeof req.query.internid==="string"){
@@ -283,11 +284,11 @@ exports.usercampaigns = function(req,res){
 exports.getinterninfo = function(req,res){
     console.log("hellow wast this even calllllllllllllllllled?????????????");
     console.log("req.query", req.query);
-    db.User.findOne({where: {id: req.query.id}})
+    db.User.findOne({where: {id: req.query.id}, include: [{model: db.User, as: 'Intern'}]})
         .then(function(user){
-          //  console.log("USERERERERERER", user);
-            user.getInterns();
-            console.log("USERRRRRRRRRRRRRRRRR", user);
+            console.log("USERERERERERER", user);
+            //user.getInterns();
+            console.log("USERRRRRRRRRRRRRRRRRwithinterns?", user);
             return res.jsonp(user);
         }).catch(function(err){
             return res.send({

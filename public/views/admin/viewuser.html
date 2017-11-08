@@ -23,7 +23,7 @@
             <td ng-show="user.admin">Yes</td>
             <td ng-show="!user.admin">No</td>
             <td ng-show="user.intern===true">Yes</td>
-            <td ng-show="user.intern===false">No</td>
+            <td ng-show="user.intern!==true">No</td>
             <td ng-show="user.Advisor">{{user.Advisor.name}}</td>
         </tr>
     </table>
