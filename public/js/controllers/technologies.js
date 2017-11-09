@@ -13,8 +13,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
             isActive: true, 
             isUnloved: false
         });
-        console.log("$scope.marketer", $scope.marketer);
-        console.log("technology:", technology);
         technology.$save(function(response) {
             $state.go('viewTech',{id : response.id});
         });
@@ -50,8 +48,7 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
         var marketer = $scope.Tech_marketer;
 
         technology.Tag_name = $scope.whatyouneed;
-        technology.marketer = $scope.marketer;
-        
+        technology.marketer = $scope.marketer;  
         technology.updated = [];
         
         technology.updated.push(new Date().getTime());
@@ -67,16 +64,12 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
     var tagids =[]; 
     var user;
 
-  
-
-    $scope.findOne = function() {
-        
+    $scope.findOne = function() {    
         //get information about technology
         Technologies.get({
             id: $stateParams.id 
             }, function(technology) {
                 $scope.technology = technology;
-                console.log("$scope.technology", $scope.technology);
 
                 //get technology marketer
                 if (technology.User) {
@@ -113,8 +106,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
             });
     };
 
-  
-
     $scope.findEventsforOneTechnology = function(){  
       $http({
             method: 'GET',
@@ -124,7 +115,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
             $scope.makeEventDataUseable(response);
         });
     };
-
 
     $scope.companynames=[];
     $scope.Eventtechs =[];
@@ -137,12 +127,8 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
 
     $scope.makeEventDataUseable = function(response){
         $scope.events = response.data;
-        //var evnts = $scope.events;
-        
-  //      console.log("events", $scope.events);
+
         if($scope.events.length===0){
-            //console.log("No events");
-            //console.log("should hide");
             $scope.noevents = true;
         } else {
             $scope.noevents = false;
@@ -175,17 +161,11 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                 }
             }
         }
-
-   //     console.log('parsedevents', $scope.parsedevents);
     
-
         //push company names into $scope.companynames so that they can be compared to list of suggested companies and duplicates removed
-        //console.log("$scope.companies", $scope.companies);
         for(var w=0; w<$scope.parsedevents.length; w++){
-            //console.log("$scope.companies[w].Company_name", $scope.companies[w].Company_name);
             $scope.companynames.push(($scope.parsedevents[w])[0].Company.Company_name);
         }
-        //console.log("$scope.companynames", $scope.companynames);
         $scope.findSuggestedCompanies();        
     };
 
@@ -218,7 +198,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                 $scope.Eventtechs.push($scope.events[i].Technology);
                 $scope.users.push($scope.events[i].User);
                 $scope.companies.push($scope.events[i].Company);
-                //console.log("$scope.events[i]", $scope.events[i]);
 
                 //parse out contact info for each event
                 if($scope.events[i].Contacts){
@@ -311,8 +290,7 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
     $scope.getNow = function(){
         return new Date();
     };
-
-    
+ 
     $scope.find = function() {
         Technologies.query(function(technologies) {
             $scope.technologies = technologies;  
@@ -417,13 +395,9 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
         });
     };
 
-//     $scope.internid=[];
-
     $scope.mymarketing = function(){
         $scope.showall = false;
         if($scope.global.user.Interns!==undefined){
-           console.log("INTERnS=TRUE");
-           console.log("INterns are", $scope.global.user.Interns);
             $scope.internid=[];
             $http({
                 method: "GET", 
@@ -443,11 +417,9 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                              id: $scope.global.user.id}
                 }).then(function(tex){
                     $scope.technologies = tex.data;
-        //            console.log("whatcameback:", $scope.technologies);
                     $scope.gettagsandmarketers();
                 });
                 $scope.title = "My Active ";
-                //$scope.findEventsForFollowUp();
             });
         } else {
             console.log("FALSEadmin")
@@ -457,11 +429,9 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                     params: {id: $scope.global.user.id}
                 }).then(function(tex){
                     $scope.technologies = tex.data;
-                    console.log("whatcameback:", $scope.technologies);
                     $scope.gettagsandmarketers();
                 });
                 $scope.title = "My Active ";
-                //$scope.findEventsForFollowUp();
         }
     };
   
@@ -563,7 +533,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
 
     $scope.choose = function(comp){
         $scope.company = comp;
-        console.log("$scope.company", $scope.company);
         var company = $scope.company;
 
         $http({
@@ -572,9 +541,7 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
             params: {Company_name: company}
         }).then(function(company){
             $scope.company = company.data;
-            console.log("COMpanyfound", $scope.company);
             $scope.contacts = $scope.company.Contacts;
-            console.log($scope.contacts, "$scope.contacts");
             $scope.contactschunked = $scope.chunk($scope.contacts, 3);
         });
     }; 
@@ -593,7 +560,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
         $scope.arrayofarrayofcontacts=[];
 
         if($scope.global.user.Interns!==undefined){
-            console.log("TRUtueE");
             $scope.internid=[];
             $http({
                 method: "GET", 
@@ -605,7 +571,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
             url: '/geteventsneedingfollowup',
             params: {internid: $scope.internid}
         }).then(function(response){
-            console.log("response.data", response.data);
             $scope.makeEventDataUseable2(response);
             });
             });
@@ -615,7 +580,6 @@ angular.module('mean.technologies').controller('TechController', ['$scope', '$st
                 url: '/geteventsneedingfollowupfornonadmin',
                 params: {internid: $scope.internid}
             }).then(function(response){
-                console.log("response.data", response.data);
                 $scope.makeEventDataUseable2(response);            
             });
         }

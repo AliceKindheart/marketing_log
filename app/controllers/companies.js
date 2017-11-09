@@ -28,10 +28,8 @@ exports.company = function(req, res, next, id) {
 /**
  * List of Companies
  */
-exports.all = function(req, res) {  
-console.log("CALLLLLLLLLLLLLLLLLLLLLLLLLL");  
+exports.all = function(req, res) {    
     db.Company.findAll({include: [{model: db.Tag}], order: 'Company_name'}).then(function(companies){
-        console.log("COMPSPSPSPS", companies);
         return res.jsonp(companies);
     }).catch(function(err){
         return res.render('error', {
@@ -138,9 +136,6 @@ exports.getcompanyevents = function(req,res){
         });
 };
 
-
-
-
 /**
  * Update a company
  */
@@ -165,7 +160,6 @@ exports.update = function(req, res) {
             }).then(function(company){
                 return res.jsonp(company);
             }).catch(function(err){
-                console.log("ERRRRRRORRRR", err);
                 return res.render('error',{
                     error: err,
                     status: 500

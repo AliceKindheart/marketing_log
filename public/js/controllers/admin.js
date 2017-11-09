@@ -7,20 +7,16 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
         $http.get('/showusers')
             .then(function(response){
                 $scope.users = response.data;
-         //       console.log("$scope.users", $scope.users);
             });
     };
 
     $scope.findUser = function(){
-      //  console.log($stateParams, "$stateParams");
         $http({
             url: "/user/id", 
             method: "GET",
             params: {id: $stateParams.id}
         }).then(function(response){
                 $scope.user = response.data;
-                console.log('$scope.user', $scope.user);
-                console.log("$scope.user.Interns", $scope.user.Interns);
         }).then(function(){
             $http({
                 url: "/usercampaigns",
@@ -28,7 +24,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
                 params: {id: $scope.user.id}
             }).then(function(response){
                 $scope.tex = response.data;
-          //      console.log($scope.tex, "$scope.tex");
             });
         });
     };
@@ -37,7 +32,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
         $http.get('getadmins')
             .then(function(response){
                 $scope.admins = response.data;
-              //  console.log("$scope.admins", $scope.admins);
             });
     };
 
@@ -65,7 +59,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
 
     $scope.pickAdvisor= function(advisor){
         $scope.newuser.advisor=advisor;
-       // console.log("Advisor", $scope.newuser.advisor);
     };
 
     $scope.changepassword = function(){
@@ -78,7 +71,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
                 data: {
                     oldpassword: $scope.oldpassword,
                     newpassword: $scope.newpassword,
-                    //id: user.id
                 }
             }).then(function(){
                 $window.confirm("Password updated successfully");
@@ -126,27 +118,13 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
     };
 
     $scope.updateUser = function(){
-       // var user = $scope.user;
-       //console.log("$scope.user first time", $scope.user);
         $scope.user.name = $scope.user.first_name + " " + $scope.user.last_name;
         if($scope.user.intern===false){
-            console.log("USERUSERUSERSERUINTERNINTERNINTERIN FALSE");
             $scope.user.Advisor=null;
             $scope.user.AdvisorId=null;
         }
-       // console.log("$scope.user second time", $scope.user);
+
         var user = $scope.user;
-        console.log("typeof user", typeof user);
-        console.log("user", user);
-
-//        user.updated =[];
-  //      user.updated.push(new Date().getTime());
-
-//        user.$update(function(){
-
-//        }).then(function(){
-  //          $state.go('viewUser', {id: user.id});
-    //    });
 
         $http({
             url: "/updateuser", 
@@ -170,7 +148,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
 
     $scope.deleteUser = function(){
         var user = $scope.user;
-        console.log("user", user);
 
         if ($window.confirm("Are you sure you want to delete this user?")){
             $http({
@@ -196,10 +173,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
                     Tag_name: $scope.tag
                 }
             }).then(function(){
-                console.log("this happened");
-                //$scope.$apply();
-                //$state.go('addtags');
-                //$window.location.reload();
                 $scope.findtags();
             });
         }
@@ -233,10 +206,6 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
                 Tag_name: $scope.tagname
             }
         }).then(function(){
-        //    $scope.user = user;
-        //    console.log("$scope.user", $scope.user);
-            //console.log("$scope.global", $scope.global);
-            //$window.location.reload();
             $scope.findtags();
             $scope.tagname = "";
         });
@@ -245,8 +214,5 @@ angular.module('mean.auth').controller('AdminController', ['$scope','$window', '
     $scope.choose = function (tag) {
         $scope.tag = tag;
       };
-
-  
-
 
 }]);

@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-
 	var Company = sequelize.define('Company', {	
 			Company_name: DataTypes.STRING,
 			Company_email: DataTypes.STRING,
@@ -18,7 +17,6 @@ module.exports = function(sequelize, DataTypes) {
 				{type: 'FULLTEXT', name: 'text_idx', fields: ['Company_name']}
 			]
 		}	
-	);
-	
+	);	
 	return Company;
 };

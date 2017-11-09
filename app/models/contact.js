@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-
 	var Contact = sequelize.define('Contact', {
 			Contact_name: DataTypes.STRING,
 			Contact_firstname: DataTypes.STRING,
@@ -10,10 +9,6 @@ module.exports = function(sequelize, DataTypes) {
 			Contact_email: DataTypes.STRING,
 			Contact_phone: DataTypes.STRING,
 			Contact_notes: DataTypes.STRING
-			//Contact_notes: DataTypes.STRING,
-			//Company_name: DataTypes.STRING,
-			//contacts_id: DataTypes.INTEGER,
-			//company_id: DataTypes.INTEGER
 		},
 		{
 			associate: function(models) {
@@ -27,6 +22,5 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		}
 	);
-
 	return Contact;
 };

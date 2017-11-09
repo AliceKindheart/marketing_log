@@ -13,7 +13,6 @@ exports.all = function(req, res) {
     console.log("exports.all events happened WHEN IT SHOULDNT");
     
     db.Event.findAll().then(function(events){
-        //console.log("EVVVVVVENNNNTTTSSS");
         return res.jsonp(events);
     }).catch(function(err){
         return res.render('error', {
@@ -25,10 +24,7 @@ exports.all = function(req, res) {
 
 exports.create = function(req, res) {
     var techtofind = req.body.Technology;
-    //console.log("REQ>BODY.company", req.body.Company);
     var comptofind = req.body.Company;
-    console.log("REQBODYCONTACTS", req.body.Contacts);
-    //console.log("comptofind.CONTACTS", comptofind.Contacts);
     var user;
     var tek;
     var comp;
@@ -36,7 +32,6 @@ exports.create = function(req, res) {
     db.Company.findOne({where: {Company_name: comptofind.Company_name}
         }).then(function(cmp){
             comp = cmp;
-            //console.log("COMAONY", comp);
             return db.Technology.findOne({where: {id: techtofind.id}
             }).then(function(foundtech){
                 tek=foundtech;
@@ -52,21 +47,16 @@ exports.create = function(req, res) {
                         console.log("req.body.Contacts[i]", req.body.Contacts[i]);
                         db.Contact.findOne({where: {id: req.body.Contacts[i].id}
                             }).then(function(cont){
-                                console.log("CTONCTAFOUND", cont);
                                 cont.addEvent(event);
                             });
-                       // event.setContact(req.body.Contacts[i]);
                     }
 
-                    //event.setContacts(req.body.Contacts, {through: 'ContactEvents'});
                     if(!event){
-                        console.log("NOTANEVENT!!!!");
                         return res.send('users/signup', {errors: new StandardError('EVENT could not be created')});
                     } else {
                         return res.jsonp(event);
                     }
             }).catch(function(err){
-                console.log("THROWING AN ERROR MESSAGE", err);
                 return res.render('error', {
                     error: err,
                     status: 500
@@ -76,12 +66,10 @@ exports.create = function(req, res) {
 };
 
 exports.destroy = function(req, res) {
-    console.log("DESTROYEVENT");
     // create a new variable to hold the event that was placed on the req object.
     var event = req.event;
 
     event.destroy().then(function(){
-        console.log("MADEITTHISFAR");
         return res.jsonp(event);
     }).catch(function(err){
         return res.render('error', {
@@ -96,19 +84,11 @@ exports.destroy = function(req, res) {
  * Its purpose is to preload the company on the req object then call the next function. 
  */
 exports.event = function(req, res, next, id) {
-   // console.log('eventid => ' + id);
-   // console.log("EVENTS.EVENT");
     db.Event.find({where: {id: id}, include: [{model: db.User}, {model: db.Technology}, {model: db.Contact}, {model: db.Company}]}).then(function(event){
-        //console.log(id);
         if(!event) {
-     //       console.log("not an event");
-            //return next(new Error('Failed to load company ' + id));
             return next();
         } else {
             req.event = event;
-       //     console.log("EVENT");
-       //     console.log(event);
-            //return res.jsonp(company);
            return next();            
         }
     }).catch(function(err){
@@ -117,10 +97,8 @@ exports.event = function(req, res, next, id) {
 };
 
 exports.findcompanies = function(req,res){
-    console.log("FINDDDCOMPPPSSS");
     db.Company.findAll({include: [{model: db.Contact}], order: 'Company_name'})
         .then(function(comps){
-            //console.log("COMMPS", comps);
             return res.jsonp(comps);
         });
 };
@@ -133,7 +111,6 @@ exports.findkomp = function(req, res){
 };
 
 exports.findtech = function(req,res){
-    //console.log("FINDDDTECCCCC");
     db.Technology.findOne({where: {id: req.query.id}})
         .then(function(tec){
             return res.jsonp(tec);
@@ -148,20 +125,16 @@ exports.findteck = function(req,res){
 };
 
 exports.getcontacts = function(req,res){
-    //console.log("GETTTTCONTACTSSSS", req.query);
     db.Company.findOne({where: {Company_name: req.query.Company_name}, include: {model: db.Contact}})
         .then(function(company){
-            return res.jsonp(company);
-            
+            return res.jsonp(company);   
         });
 };
 
 exports.getcontactsforevents = function(req,res){
-    console.log("E:TLKJER:LKJEWT:KLWEJT:LWTEJ:WLTJK:WLTJ:WETJKW:ETJHEEEEEEEEEEEEEEEEEEEE");
     db.Contact.getEvents({
             where: {Event_rowId: req.query.id}
         }).then(function(cntcs){
-            console.log("CATAAGDFADFG", cntcs);
             return res.jsonp(cntcs);
         }).catch(function(err){
             return res.render('error', {
@@ -172,14 +145,8 @@ exports.getcontactsforevents = function(req,res){
 };
 
 exports.getem = function(req,res){
-   // console.log("THEHEHTHT:SWEKT", req.query, req.user);
-   console.log("REQqqqqqqqqqqqqqqq.query", req.query);
     var internid = [];
-    console.log("REQQQQQ.query.internid: ", req.query.internid);
-    //console.log(typeof req.query.internid);
     if(typeof req.query.internid==="string"){
-      //  console.log("number!!!!");
-
         internid.push(req.query.internid);
     } else {
         internid = req.query.internid;
@@ -191,13 +158,11 @@ exports.getem = function(req,res){
                     {UserId: req.user.id},
                     {UserId: {$in: internid}}
                 ],
-              //  UserId: req.user.id, 
                 Event_followupdate: {$ne:null}, 
                 Event_flag: true}, 
             include: [{model: db.Contact}, {model: db.User}, {model:db.Company}, {model:db.Technology}], 
             order: 'Event_date'})
         .then(function(evnts){
-            //console.log("EVENTSEVENTSEVENTSEVETNTSEVENTESEVENTS", evnts);
             return res.jsonp(evnts);
         }).catch(function(err){
             return res.render('error', {
@@ -208,7 +173,6 @@ exports.getem = function(req,res){
 };
 
 exports.getemfornonadmin = function(req,res){
-
     db.Event.findAll({
             where: {
                 UserId: req.user.id, 
@@ -217,7 +181,6 @@ exports.getemfornonadmin = function(req,res){
             include: [{model: db.Contact}, {model: db.User}, {model:db.Company}, {model:db.Technology}], 
             order: 'Event_date'})
         .then(function(evnts){
-            console.log("EVENTSEVENTSEVENTSEVETNTSEVENTESEVENTS", evnts);
             return res.jsonp(evnts);
         }).catch(function(err){
             return res.render('error', {
@@ -240,10 +203,8 @@ exports.geteventinfo = function(req,res){
 };
 
 exports.getusers = function(req,res){
-    //console.log("REQ.QUERY", req.query);
     db.User.findOne({where: {id: req.query.id}})
     .then(function(user){
-        //console.log("Found USer", user);
         return res.jsonp(user);
     }).catch(function(err){
         return res.render('error', {
@@ -263,8 +224,6 @@ exports.hasAuthorization = function(req, res, next) {
 };
 
 exports.newuser = function(req,res) {
-   // console.log("REQ.PARMSxxxxxxxxxxxxxxxxxxx", req.params);
-   // console.log("ReQ.QUERY", req.query);
     db.User.findOne({where: {name: req.query.name}})
         .then(function(user){
             return res.jsonp(user);
@@ -273,24 +232,17 @@ exports.newuser = function(req,res) {
 /* Show an event
  */
 exports.show = function(req, res) {
- //   console.log("EVENTS.SHOW");
-  //  console.log("LOOKEVENT!! SHOW!!!");
-        // Sending down the event that was just preloaded by the events.event function
+    // Sending down the event that was just preloaded by the events.event function
     // and saves event on the req object.
     return res.jsonp(req.event);
 };
 
 exports.update = function(req, res) {
-    //console.log("REQ.BODYORRRRRREVVVENT", req.body);
-   console.log("REQ.BODYYYYYYYYYYYYYYYYYY", req.body);
-   console.log("THISGOTCSLELELELELELDDDDDDDDDDDDDDDDDDDDD");
     // create a new variable to hold the company that was placed on the req object.
     var event = req.event;
     var newuser;
     var newcomp;
-        //return user;
-      //  return res.jsonp(user)
-    //}).then(function(){
+
     return event.updateAttributes({
         Event_date: req.body.Event_date,
         Event_notes: req.body.Event_notes,
@@ -309,9 +261,7 @@ exports.update = function(req, res) {
             });
         }
 
-
         if (req.body.userchange===true){
-        //  console.log("TOLDYOUSOOOOOOOOOOOOOOOO");
             db.User.findOne({where: {name: req.body.newusername}})
             .then(function(user){
                 console.log("USER: ", user);
@@ -321,23 +271,16 @@ exports.update = function(req, res) {
             });
         }
 
-        console.log("REQ.BODY.CONTACTidS>LENGTH:", req.body.contactids.length);
         //modify contacts if the company has been changed or contactids exist
-        if(req.body.company || req.body.contactids.length!==0){
-            
-            console.log("HELET:LTKE:WLTK:LWTEJ:WLTJa;sldkjf;aslkdjf;saldkjf");
-            
+        if(req.body.company || req.body.contactids.length!==0){   
             db.Contact.findAll({where: {id: req.body.contactids}})
             .then(function(contact){
                 if(contact.length===0){
                     event.setContacts([], {through: 'ContactEvents'});
                 }
-
-                console.log("THISISWHatCONTACTSLOOKSLIKE: ", contact);
                 for (var j=0; j<contact.length; j++){
                     event.setContacts([contact[j]], {through: 'ContactEvents'});
                 }
-           // console.log("event.Contactsfor the seconddangtimealready", event.Contacts);
             });
         }
         return res.jsonp(event);
@@ -349,10 +292,3 @@ exports.update = function(req, res) {
     });
 };
     
-
-
-
-
-
-
-

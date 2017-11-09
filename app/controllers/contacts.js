@@ -16,13 +16,10 @@ exports.contact = function(req, res, next, id) {
     console.log("CONTACTS.CONTACT");
     db.Contact.find({where: {id: id}, include: [{model: db.Company}, {model: db.Tag}, {model:db.Event}]}).then(function(contact){
         if(!contact) {
-            //return next(new Error('Failed to load contact ' + id));
             return next();
         } else {
             req.contact = contact;
             console.log("CONTACT");
-            //console.log(company);
-            //return res.jsonp(contact);
            return next();            
         }
     }).catch(function(err){
@@ -45,20 +42,15 @@ exports.create = function(req, res) {
     // save and return an instance of contact on the res object. 
     db.Company.findOne({where:{Company_name: req.body.Company_name}, include: {model: db.Contact}})
         .then(function(company){
-            console.log("COMPANYFOUND", "COMPANYID", company.id);
-            console.log("COMPANNNNNNNNNNNNNNNNNNNY", company);
             foundcompany = company;
             companyid = company.id ;
             return db.Contact.create(req.body);
         }).then(function(contact){
-            //contact.addCompanies(foundcompany);
-            console.log("UPDATEDCONTACT", contact);
             contact.setCompany(foundcompany);
             foundcompany.addContact(contact);
             return contact.updateAttributes({
                 CompanyId: companyid
             });
-            //return contact;
         }).then(function(contact){
             if (req.body.Tag_name){
                 var Tagnames = req.body.Tag_name;
@@ -69,12 +61,8 @@ exports.create = function(req, res) {
                     }); 
 
             } 
-                   // }).then(function(contact){
-        
-            console.log("CONTACTBEINGRETURNED", contact);
             return res.jsonp(contact);
         }).catch(function(err){
-            console.log("THROWING AN ERROR MESSAGE", err);
             return res.status(status).send('users/signup', {
                 errors: err,
                 status: 500
@@ -98,16 +86,11 @@ exports.search = function(req,res) {
 exports.update = function(req, res) {
     // create a new variable to hold the contact that was placed on the req object.
     var contact = req.contact;
-    //var Company_name = req.body.Company_name
-    //console.log(req.body.compname);
-    //console.log("REQQQQQQQQQQQQ>BODY", req.body);
     var newcompany;
     var compid;
     var newtags = req.body.Tag_name.join(", ").split(", ");
     var tagrows;
     var oldcompany = req.body.Company;
-    console.log("oldcompany", oldcompany);
-
     
     if(oldcompany){
         db.Company.findOne({where:{id: oldcompany.id}, include: {model: db.Contact}})
@@ -176,13 +159,9 @@ exports.update = function(req, res) {
  * Delete a contact
  */
 exports.destroy = function(req, res) {
-    console.log("DESTROYDESTROYDESTROY");
-    //console.log(req.company);
     // create a new variable to hold the company that was placed on the req object.
     var contact = req.contact;
-
     contact.destroy().then(function(){
-        console.log("MADEITTHISFAR");
         return res.jsonp(contact);
     }).catch(function(err){
         return res.render('error', {
@@ -197,7 +176,6 @@ exports.destroy = function(req, res) {
  * Show a contact
  */
 exports.showy = function(req, res) {
-    console.log("LOOKLOOKLOOK!!! SHOWySHOWySHOWy!!!");
     // Sending down the contact that was just preloaded by the contacts.contact function
     // and saves contact on the req object.
     return res.jsonp(req.contact);
@@ -205,11 +183,8 @@ exports.showy = function(req, res) {
 /**
  * List of Contacts
  */
-exports.all = function(req, res) {
-    console.log("exports.all for contacts happened");
-    
+exports.all = function(req, res) {    
     db.Contact.findAll({include: [{model: db.Company}, {model: db.Tag}], order: "Contact_lastname"}).then(function(contacts){
-        console.log("CCCCCContacts");
         return res.jsonp(contacts);
     }).catch(function(err){
         return res.render('error', {

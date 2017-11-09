@@ -5,7 +5,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
 
     $scope.create = function() {
         var Tagnames = [];
-        console.log("$scope.selected", $scope.selected);
 
         var company = new Companies({
             Company_name: this.Company_name,
@@ -65,15 +64,13 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
         var tags = [];
         var contactarray;
         var contacts = [];
-        //console.log("findOne ran");
+
         cmpnyid = $stateParams.id;
         Companies.get({id: $stateParams.id}, function(company) {
             $scope.company=company;
-            console.log("$scope.company", $scope.company);
             contactarray = company.Contacts;
             $scope.completecontacts = company.Contacts;
             $scope.events=company.Events;
-            //console.log("contactarray", contactarray);
 
             //getting contact information into a useaable form
             if(contactarray!==0){
@@ -85,7 +82,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             }
             $scope.contacts = contacts;
             $scope.contactschunked = $scope.chunk($scope.contacts, 3);
-            //console.log("$scope.contactschunked", $scope.contactschunked);
 
             //getting tag information into a useable form
             if(company.Tags.length!==0){
@@ -97,7 +93,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             tagarray.forEach(function(tag){
                 tags.push(tag.Tag_name);
             });
-            console.log("TAgs", tags);
 
             //setting up to be able to edit company tags
             $scope.whatyouneed = tags;
@@ -106,7 +101,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             $scope.tags = tags.join(", ");
             $scope.findtags();
             $scope.selected = $scope.tags;
-
             $scope.findCompanyEvents();
             
         });
@@ -117,7 +111,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
         var arrayoftagobjects = [];
 
         Companies.query(function(companies) {
-            console.log("COMPANIESRECEIVED: ", companies);
             $scope.companies = companies;
 
             companies.forEach(function(company){
@@ -147,7 +140,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             });
 
             $scope.tags=arrayoftagnames;
-
         });
     };
 
@@ -169,13 +161,8 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             });
             $scope.chunkedtagnames = $scope.chunk($scope.tagnames, 5);
             console.log("$scope.chunkedtagnames", $scope.chunkedtagnames);
-        });
-        
+        });        
     };
-
-    
-
-
 
     $scope.selected = [];
 
@@ -202,8 +189,6 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
       };
 
     $scope.toggle2 = function (tag, whatyouneed) {
-        console.log("whatyouneed", whatyouneed, typeof whatyouneed);
-        console.log("$scope.whatyouneed", $scope.whatyouneed, typeof $scope.whatyouneed);
         var idx = $scope.whatyouneed.indexOf(tag);
         if (idx > -1) {
             $scope.whatyouneed.splice(idx, 1);
@@ -223,11 +208,9 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             url: "/searchforcompany",
             params: {compname: $scope.compname}
         }).then(function(resp){
-            console.log("response", resp.data);
             $scope.companies = resp.data;
         });
     };
-
 
     $scope.findCompanyEvents = function(){
         $scope.Eventtechs =[];
@@ -241,18 +224,15 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             url: '/getcompanyevents',
             params: {compid: $scope.company.id}
         }).then(function(response){
-            //console.log("ReSPONSE", response);
             $scope.events = response.data;
             var evnts = $scope.events;
-            //console.log("TYpeof $scope.events", typeof $scope.events);
-            console.log("events", $scope.events);
+
             if($scope.events.length===0){
-                //console.log("should hide");
                 $scope.noevents = true;
             } else {
                 $scope.noevents = false;
             }
-            console.log("$scope.events.length", $scope.events.length, $scope.noevents);
+
             for(var i=0; i<$scope.events.length; i++){
                 $scope.Eventtechs.push($scope.events[i].Technology);
                 $scope.users.push($scope.events[i].User);
@@ -283,14 +263,7 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             });
 
             $scope.contactnames = contactnames;
-            //$scope.geteventsinfo();
-            console.log("$scope.arrayofarrayofcontacts", $scope.arrayofarrayofcontacts);
         });
     };
-
-
-   
-
-
 
 }]);

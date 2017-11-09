@@ -68,7 +68,7 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
         var company;
         var tagarray = [];
         var tags = [];
-        //console.log("$stateParams.id", $stateParams.id);
+
         Contacts.get({
             id: $stateParams.id 
         }, function(contact) {
@@ -80,7 +80,7 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
             }
             
             $scope.events = contact.Events;
-            console.log("$scope.events", $scope.events);
+
             if($scope.events.length===0){
                 $scope.noevents = true;
             } else {
@@ -95,25 +95,15 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
             } else {
                 tags.push({Tag_name:"None"});
             }
-            console.log("did this thing even happen?", tags);
-            $scope.vartags=tags.join(", ");
-            
-            
 
+            $scope.vartags=tags.join(", ");
             $scope.whatyouneed = tags;
             whatyouneed = $scope.whatyouneed;
-            //console.log("vartags", vartags);
-            $scope.tags=$scope.vartags;
-        
+            $scope.tags=$scope.vartags;       
             $scope.tagnames1 = $scope.tags;
-            console.log("$scope.tagnames1", $scope.tagnames);
             $scope.findtags();
-            console.log("$scope.tagnames", $scope.tagnames);
             $scope.selected = $scope.tagnames1;
-            console.log("selected, ", $scope.selected);
         });
-        
-
         $scope.findcompanies();
     };
 
@@ -128,14 +118,12 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
         });
     };
 
-
     $scope.find = function() {
         var arrayofcontacts = [];
         var arrayofarrayoftagobjects = [];
         var arrayoftagobjects = [];
 
         Contacts.query(function(contacts) {
-            console.log("CONTACTSSSSS: ", contacts);
             $scope.contacts = contacts;
             var companies = [];
 
@@ -150,13 +138,11 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
 
             contacts.forEach(function(contact){
                 if(contact.Tags.length!==0){
-                    console.log("HELLLLLOWOWOWOWO");
                     arrayofarrayoftagobjects.push(contact.Tags);
                 } else {
                     arrayofarrayoftagobjects.push([{Tag_name: "None"}]);
                 }
             });
-            console.log("arrayofarrayoftagobjects", arrayofarrayoftagobjects);
 
             var tags = [];
             var arrayoftags = [];
@@ -168,17 +154,13 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
                 arrayoftags.push(tags);   
                 tags = [];  
             });
-            console.log("arrayoftags: ", arrayoftags);
 
             var arrayoftagnames = [];
             var stringoftagnames;
             arrayoftags.forEach(function(array){
                 stringoftagnames = array.join(", ");
-                console.log("stringoftagnames", stringoftagnames);
                 arrayoftagnames.push(stringoftagnames);
             });
-            console.log("arrayoftagnames: ", arrayoftagnames);
-
             $scope.tags=arrayoftagnames;
         });
     };
@@ -192,7 +174,6 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
                 $scope.companies.push(company.Company_name);
             });
             $scope.chunkedcompanies = $scope.chunk($scope.companies, 3);
-            //$scope.findtags();
         });
     };
 
@@ -218,7 +199,6 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
 
       $scope.choose2edit = function(company){
         $scope.nameofcompany = company;
-        console.log("COMPANY, $scope.nameofcompany", $scope.nameofcompany);
       };
 
       $scope.searchForContact = function(){
@@ -227,9 +207,6 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
             url: '/searchforcontacts',
             params: {contactname: $scope.contactname}
         }).then(function(resp){
-        //$searchcontacts
-          //  .then(function(resp){
-            //    console.log("response", resp.data);
                 $scope.contacts = resp.data;
             });
       };
@@ -244,7 +221,6 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
                 $scope.tagnames.push(tag.Tag_name);
             });
             $scope.chunkedtagnames = $scope.chunk($scope.tagnames, 5);
-            console.log("$scope.chunkedtagnames", $scope.chunkedtagnames);
         });
         
     };
@@ -261,8 +237,6 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$st
       };
 
     $scope.toggle2 = function (tag, whatyouneed) {
-        console.log("whatyouneed", whatyouneed, typeof whatyouneed);
-        console.log("$scope.whatyouneed", $scope.whatyouneed, typeof $scope.whatyouneed);
         var idx = $scope.whatyouneed.indexOf(tag);
         if (idx > -1) {
             $scope.whatyouneed.splice(idx, 1);

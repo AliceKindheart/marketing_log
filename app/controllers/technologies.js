@@ -50,7 +50,6 @@ exports.show = function(req, res) {
  * Create a technology
  */
 exports.create = function(req, res) {
-    //console.log("REQ.BODY", req.body);
     var tagrows;
     var thetechnology;
     var marketer = req.body.Tech_marketer;
@@ -61,37 +60,24 @@ exports.create = function(req, res) {
         .then(function(person){
             //saving the marketer to an outside variable for future reference
             personn = person;
-            //console.log("personn", personn);
         }).then(function(){
             if (req.body.Tag_name){
-                //console.log("MADEITITTOFIRSTIF");
                 var Tagnames = req.body.Tag_name;
                 db.Tag.findAll({where:{Tag_name:{$in:Tagnames}}})
                     .then(function(rowoftags){
-                        //console.log("ROWOFTAGS", rowoftags);
                         //saving the found tags to an outside variable for future reference
                         tagrows=rowoftags;
                         return db.Technology.create(req.body);
-                            //{where: {
-                            //Tech_RUNumber: req.body.Tech_RUNumber,
-                            //Tech_name: req.body.Tech_name,
-                            //Tech_inventor: req.body.Tech_inventor,
-                            //isActive: req.body.isActive
-                        //}});
                     }).then(function(technology){
-                        //console.log("SOSTUPID", technology);
                         thetechnology = technology;
                         technology.setUser(personn);
                         technology.addTags(tagrows);
-                        return technology;
-                        //return technology.addTags(tagrows);                
+                        return technology;              
                     }).then(function(tek){
-                        // console.log("TEKKKKK", tek);
                         return res.jsonp(tek);
                     }).catch(function(err){
                         return res.status(500).send("Technology could not be created");
-                    });
-                    
+                    });                    
             } else {
                 db.Technology.create(req.body).then(function(technology){
                     if(!technology){
@@ -111,11 +97,8 @@ exports.create = function(req, res) {
 };
 
 exports.searchfortech = function(req, res){
-    //console.log("SEARCHING");
-    //console.log(req.query.number);
     db.Technology.findOne({where: {Tech_RUNumber: req.query.number}, include: [{model: db.Tag}, {model: db.User}]})
         .then(function(tech){
-            //console.log("tech:", tech);
             return res.jsonp(tech);
         }).catch(function(err){
             return res.send({
@@ -128,16 +111,12 @@ exports.searchfortech = function(req, res){
 exports.searchformine = function(req,res){
     console.log("REQQQQquery", req.query);
     var internid = [];
-    //console.log(typeof req.query.internid);
     if(typeof req.query.internid==="string"){
-      //  console.log("number!!!!");
-
         internid.push(req.query.internid);
     } else {
         internid = req.query.internid;
     }
 
-    //console.log(internid);
     db.Technology.findAll({
             where: {
                 $or: [
@@ -148,7 +127,6 @@ exports.searchformine = function(req,res){
             include: [{model: db.User}, {model: db.Tag}], 
             order: 'Tech_RUNumber'})
         .then(function(tex){
-        //    console.log("TEXXXXXXXXX", tex);
             return res.jsonp(tex);
         }).catch(function(err){
             return res.send({
@@ -159,7 +137,6 @@ exports.searchformine = function(req,res){
 };
 
 exports.searchforjustmine = function(req,res){
-     //console.log(internid);
     db.Technology.findAll({
             where: {
                     UserId: req.user.id, 
@@ -168,7 +145,6 @@ exports.searchforjustmine = function(req,res){
             include: [{model: db.User}, {model: db.Tag}], 
             order: 'Tech_RUNumber'})
         .then(function(tex){
-          //  console.log("TEXXXXXXXXX", tex);
             return res.jsonp(tex);
         }).catch(function(err){
             return res.send({
@@ -203,21 +179,16 @@ exports.geteventsforonetechnologyforfollowup = function(req,res){
 };
 
 exports.findsuggestedcompanies = function(req,res){
-    console.log("FFFFFFFFFFFFFFFFFFFFunctionwas called");
     var Tagnames = req.query.tagids;
-    console.log("TAGss", Tagnames);
     var foundcomps = [];
-    console.log("TYPEOF TAGNAMES:", typeof Tagnames);
 
     if(typeof Tagnames==="string"){
-        console.log("NUMBER@@@@@$%#^@$%&#^&");
         db.Company.findAll({
             include: [{
                 model: db.Tag,
                 attributes: ['id', 'Tag_name'],
                 where: [{'$TagId$': Tagnames}]
-            }]
-            
+            }]       
         }).then(function(cmps){
             return res.jsonp(cmps);
         });
@@ -226,26 +197,19 @@ exports.findsuggestedcompanies = function(req,res){
             include: [{
                 model: db.Tag,
                 attributes: ['id', 'Tag_name'],
-                //through: {CompanyTags: {where: {TagId: 2}}}
                 where: [{'$TagId$': {$in:Tagnames}}],
                 order: "Company_name"
-                //where: {TagId: {$in: Tagnames}}
             }]
         }).then(function(cmps){
-            console.log(cmps);
-            return res.jsonp(cmps);
+             return res.jsonp(cmps);
         });
-
-        //if(typeof Tagnames==="string"){
     }        
 };
 
 
 exports.active = function(req,res){
-    //console.log("HHHHHHHHHHHHHHIIIII");
     db.Technology.findAll({where: {isActive: true}, include: [{model: db.User}, {model: db.Tag}], order: 'Tech_RUNumber'})
         .then(function(tex){
-            //console.log("TEXXXXX", tex);
             return res.jsonp(tex);
         }).catch(function(err){
             return res.send({
@@ -268,10 +232,8 @@ exports.unloved = function(req,res){
 };
 
 exports.usercampaigns = function(req,res){
-    //console.log("REQQQQQ.QUERY", req.query);
     db.Technology.findAll({where: {UserId: req.query.id}, include: [{model: db.User}, {model: db.Tag}], order: 'Tech_RUNumber'})
         .then(function(tex){
-            //console.log(tex, "TEXXXXXXXX");
             return res.jsonp(tex);
         }).catch(function(err){
             return res.send({
@@ -282,13 +244,8 @@ exports.usercampaigns = function(req,res){
 };
 
 exports.getinterninfo = function(req,res){
-    console.log("hellow wast this even calllllllllllllllllled?????????????");
-    console.log("req.query", req.query);
     db.User.findOne({where: {id: req.query.id}, include: [{model: db.User, as: 'Intern'}]})
         .then(function(user){
-            console.log("USERERERERERER", user);
-            //user.getInterns();
-            console.log("USERRRRRRRRRRRRRRRRRwithinterns?", user);
             return res.jsonp(user);
         }).catch(function(err){
             return res.send({
@@ -303,17 +260,13 @@ exports.getinterninfo = function(req,res){
  */
 exports.update = function(req, res) {
     // create a new variable to hold the technology that was placed on the req object.
-    //console.log("req.body.marketer", req.body.marketer);
     var technology = req.technology;
-    //console.log("REQ.BODY:", req.body);
     var newtags = req.body.Tag_name.join(", ").split(", ");
-    //console.log("new tags", newtags);
     var tagrows;
     var techid = req.body.id;
     var newuser;
 
     if(newtags){
-        //console.log("There are new tags");
         return db.User.findOne({where: {name: req.body.marketer}})
             .then(function(user){
                 newuser = user;
@@ -322,7 +275,6 @@ exports.update = function(req, res) {
                     }).then(function(rowoftags){
                         //create a reference to the set of tags to be added that's outside this function
                         tagrows=rowoftags;
-                        //console.log("TAGROWS", tagrows);
                         //find technology to be updated
                         return db.Technology.findOne({where: {id: techid}, include: [{model: db.Tag}]
                     }).then(function(technogoly){
@@ -388,7 +340,6 @@ exports.destroy = function(req, res) {
 };
 
 exports.runumbers = function(req,res){
-    //console.log("req.query", req.query);
     db.Technology.findOne({where: {id:req.query.id}})
     .then(function(tec){
         return res.jsonp(tec);
@@ -421,5 +372,3 @@ exports.hasAuthorization = function(req, res, next) {
     }
     next();
 };
-
-

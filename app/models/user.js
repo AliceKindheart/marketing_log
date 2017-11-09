@@ -7,7 +7,6 @@
 var crypto = require('crypto');
 
 module.exports = function(sequelize, DataTypes) {
-
 	var User = sequelize.define('User', 
 		{
 			first_name: DataTypes.STRING,
@@ -18,11 +17,6 @@ module.exports = function(sequelize, DataTypes) {
 			hashedPassword: DataTypes.STRING,
 			provider: DataTypes.STRING,
 			salt: DataTypes.STRING, 
-			//facebookUserId: DataTypes.INTEGER,
-			//twitterUserId: DataTypes.INTEGER,
-			//twitterKey: DataTypes.STRING,
-			//twitterSecret: DataTypes.STRING,
-			//github: DataTypes.STRING,
 			openId: DataTypes.STRING,
 			admin: DataTypes.BOOLEAN,
 			intern: DataTypes.BOOLEAN
@@ -54,14 +48,11 @@ module.exports = function(sequelize, DataTypes) {
 				User.belongsToMany(models.Technology, {through: 'UserTechnologies'});
 				User.belongsTo(models.User, {as: 'Advisor', foreignKey: "AdvisorId"});
 				User.hasMany(models.User, {as: 'Interns', foreignKey: 'AdvisorId'});
-				//User.belongsToMany(models.Events, {through: 'UserEvents'})
 			},
 			get fullName(){
 				return (this.first_name + " " + this.last_name);
 			}
-
 		}
 	);
-
 	return User;
 };

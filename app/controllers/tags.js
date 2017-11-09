@@ -5,7 +5,6 @@ var StandardError = require('standard-error');
 var db = require('../../config/sequelize');
 
 exports.listtags = function(req, res) {
-    console.log("LISTTAGS RAN");
     db.Tag.findAll({order: "Tag_name"})
     	.then(function(tags){
         	return res.jsonp(tags);
@@ -32,7 +31,6 @@ exports.addtag = function(req, res) {
 exports.deletetag = function(req, res) {
     db.Tag.findOne({where: {Tag_name: req.query.Tag_name}})
         .then(function(tag){
-            console.log("TAGGGGGGGGGGGGG", tag);
             tag.destroy();
         }).then(function(){
             return res.jsonp({msg: "success"});
