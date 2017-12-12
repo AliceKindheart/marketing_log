@@ -27,10 +27,8 @@ node_modules
 //migrations/
 
 # Configuration Files
+config/config.js
 
-
-/config/env/test.json5
-/config/env/development.json5
 
 *.local
 

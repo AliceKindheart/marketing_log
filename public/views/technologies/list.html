@@ -3,12 +3,10 @@
 	<div class="row">
 	  <div class="col-lg-6">
 	    <div class="input-group">
-	      <ng-form>
-	      <input type="text" class="form-control" ng-model="number" placeholder="Search by RU number...." style="margin-top: 10px">
-	      <span class="input-group-btn">
-	        <button class="btn btn-success" ng-click="searchForTech()" type="button">Go!</button>
-	       </ng-form>
-	      </span>
+	      <form ng-submit="searchForTech()">
+		      <input type="text" class="form-control" ng-model="number" placeholder="Search by RU number...." style="margin-top: 10px">
+		      <input type="submit" value="Submit">
+	      </form>
 	      	<button margin-bottom="10px" type="button" class="btn btn-primary" ui-sref="addTech" >Start a New Campaign</button>
 	    </div><!-- /input-group -->
 	  </div><!-- /.col-lg-6 -->
@@ -60,7 +58,6 @@
             	<tr>
             		<th id="colorrow">Event Date</th>
             		<th id="colorrow">Follow Up Due Date</th>
-            		<th id="colorrow">Marketer</th>
             		<th id="colorrow">RU Number</th>
             		<th id="colorrow">Technology Title</th>
             		<th id="colorrow">Company</th>
@@ -74,7 +71,6 @@
         		<tr data-ng-repeat="event in events" ui-sref="viewEvent({id: event.id})">
         			<td>{{event.Event_date | date:'MM/dd/yyyy': '-0200'}}</td>
         			<td ng-class="{'alert' : (event.Event_followupdate | date:'MM/dd/yyyy': '-0200')<=(getNow() | date:'MM/dd/yyyy')}">{{event.Event_followupdate | date:'MM/dd/yyyy'}}</td>
-        			<td>{{users[$index].name}}</td>
         			<td>{{Eventtechs[$index].Tech_RUNumber}}</td>
         			<td>{{Eventtechs[$index].Tech_name}}</td>
         			<td>{{companies[$index].Company_name}}</td>

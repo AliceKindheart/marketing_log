@@ -4,12 +4,11 @@
 	<div class="row">
 	  <div class="col-lg-6">
 	    <div class="input-group">
-		    <ng-form>
-		      <input type="text" class="form-control" ng-model="compname" placeholder="Search for..." style="margin-top: 10px">
-		      <span class="input-group-btn">
-		       	<button class="btn btn-success" ng-click="searchForCompany()" type="button">Go!</button>
-	          </span>
-            </ng-form>
+		    <form ng-submit="searchForCompany()">
+		      <input type="text" class="form-control" ng-model="compname" placeholder="Search for..." style="margin-top: 10px" >
+		      <input type="submit" value="Submit">
+		      
+            </form>
 	    </div><!-- /input-group -->
 	  </div><!-- /.col-lg-6 -->
 	</div><!-- /.row -->

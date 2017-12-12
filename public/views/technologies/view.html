@@ -62,6 +62,42 @@
               </tr>
             </table>
 
+
+            <div ng-hide="noevents" class="panel panel-info">
+            
+            
+                <div data-ng-repeat="arrayofevents in parsedevents" heading="{{arrayofevents[0].Company.Company_name}}">
+                  <table class="table table-bordered">
+                    <caption ><strong>{{arrayofevents[0].Company.Company_name}}</strong></caption>
+                    <tr >
+                      <th id="colorrow">Event Date</th>
+                      <th id="colorrow">Follow Up Due Date</th>
+                  
+                      <th id="colorrow">Contact(s)</th>
+                      <th id="colorrow">Method</th>
+                      <th id="colorrow">Outcome</th>
+                      
+                      <th id="colorrow">Notes</th>
+                      
+                    </tr>
+                    <tr data-ng-repeat="event in arrayofevents" ui-sref="viewEvent({id: event.id})">
+                      <td>{{event.Event_date | date:'MM/dd/yyyy'}}</td>
+                      <td ng-if="event.Event_followupdate===null">None</td>
+                      <td ng-if="event.Event_followupdate" ng-class="{'alert' : (event.Event_followupdate | date:'MM/dd/yyyy': '-0200')<=(getNow() | date:'MM/dd/yyyy')}">{{event.Event_followupdate | date:'MM/dd/yyyy': '-0200'}}</td>
+                       
+                      <td data-ng-init="contacts(event)">{{event.names}}</td>
+                      <td>{{event.Event_method}}</td>
+                      <td>{{event.Event_outcome}}</td>
+                      
+                      <td>{{event.Event_notes}}</td>
+                      
+                </tr> 
+              </table> 
+            </div>
+          
+                   
+        </div>
+
             <div ng-hide="noevents" class="panel panel-info">
             
               <accordion>

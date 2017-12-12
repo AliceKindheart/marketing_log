@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('mean.companies').controller('CompaniesController', ['$scope', '$stateParams', 'Global', 'Companies', '$state', '$http', '$window', function ($scope, $stateParams, Global, Companies, $state, $http, $window) {
+angular.module('mean.companies').controller('CompaniesController', ['$scope', '$stateParams', 'Global', 'Companies', 'Contacts', '$state', '$http', '$window', function ($scope, $stateParams, Global, Companies, Contacts, $state, $http, $window) {
     $scope.global = Global;
+
+    $scope.showAddContactButton = true;
 
     $scope.create = function() {
         var Tagnames = [];
@@ -14,10 +16,14 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
             Company_phone: this.Company_phone
         });
         company.$save(function(response) {
+            if($scope.addingContact===true){
+                console.log("THEHEHEHEHEHEHjhhhhhhhjjjj");
+                $scope.createContact();
+            }
             $state.go('viewCompany',{id : response.id});
         });
 
-        this.Company_name = "";
+       // this.Company_name = "";
         this.notes = "";
         this.Tag_name = "";
         this.Company_email="",
@@ -33,8 +39,60 @@ angular.module('mean.companies').controller('CompaniesController', ['$scope', '$
         company.updated = [];
         company.updated.push(new Date().getTime());
         company.$update(function() {
+            if($scope.addingContact===true){
+                console.log("THEHEHEHEHEHEHjhhhhhhhjjjj");
+                var contact = new Contacts({
+                Contact_firstname: $scope.Contact_firstname,
+                Contact_lastname: $scope.Contact_lastname,
+                Contact_name: $scope.Contact_firstname + " " + $scope.Contact_lastname,
+                Contact_email: $scope.Contact_email,
+                Contact_phone: $scope.Contact_phone,
+                Contact_title: $scope.Contact_title,
+                Company_name: $scope.company.Company_name,
+                Contact_notes: $scope.Contact_notes,
+              //  Tag_name: this.selected
+                });
+                contact.$save(function(response) {
+                    console.log("RESPOSENSE", response);
+                   // $state.go('viewCompany',{id : response.CompanyId});
+                });
+            }
             $state.go('viewCompany',{id : $stateParams.id});
         });
+    };
+
+    $scope.addContact = function(){
+        $scope.addingContact = true;
+        $scope.showAddContactButton = false;
+    };
+
+    $scope.createContact = function() {
+
+        //console.log($scope.selected, "Company_name");
+        var contact = new Contacts({
+            Contact_firstname: this.Contact_firstname,
+            Contact_lastname: this.Contact_lastname,
+            Contact_name: this.Contact_firstname + " " + this.Contact_lastname,
+            Contact_email: this.Contact_email,
+            Contact_phone: this.Contact_phone,
+            Contact_title: this.Contact_title,
+            Company_name: this.Company_name,
+            Contact_notes: this.Contact_notes,
+          //  Tag_name: this.selected
+        });
+        contact.$save(function(response) {
+            console.log("RESPOSENSE", response);
+            $state.go('viewCompany',{id : response.CompanyId});
+        });
+
+        this.Contact_name = "";
+        this.Contact_firstname="";
+        this.Contact_lastname="";
+        this.Contact_email = "";
+        this.Contact_phone = "";
+        this.Contact_title = "";
+        this.Company_name = "";
+        this.Contact_notes = "";
     };
 
     $scope.remove = function(company) {

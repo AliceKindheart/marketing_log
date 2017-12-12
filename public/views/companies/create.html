@@ -31,9 +31,37 @@
           </div>
         </fieldset>
       </div>
-	
+
+      <table class="table table-bordered" ng-show="addingContact">
+      	<h2 ng-show="addingContact">Add Company Contact</h2>
+			<tr>
+				<th id="colorrow">First Name</th>
+				<th id="colorrow">Last Name</th>
+				<th id="colorrow">Title/Position</th>
+				
+			</tr>
+			<tr>
+				<td><input type="text" data-ng-model="Contact_firstname" id="Contact_name" placeholder="First Name"/>
+				<td><input type="text" data-ng-model="Contact_lastname" id="Contact_name" placeholder="Last Name"/>
+				</td><td><input type="text" data-ng-model="Contact_title" id="title" placeholder="Title"/></td>				
+			</tr>
+		</table>
+
+		<table class="table table-bordered" ng-show="addingContact">
+			<tr>
+				<th id="colorrow">Email</th>
+				<th id="colorrow">Phone</th>
+				<th id="colorrow">Notes</th>
+			</tr>
+			<tr>
+				<td><input type="text" data-ng-model="Contact_email" id="Email" placeholder="Email"/></td>
+				<td><input type="text" data-ng-model="Contact_phone" id="Phone" placeholder="Phone number"/></td>
+				<td><textarea data-ng-model="Contact_notes" id="Notes" placeholder="Notes"/></textarea></td>
+			</tr>
+		</table>
 		<div class="control-group">
 			<div class="controls">
+				<a ng-if="showAddContactButton===true" class="btn btn-primary" data-ng-click="addContact()">Add Company Contact</a>
 				<input class="btn btn-primary" type="submit">
 			</div>
 		</div>

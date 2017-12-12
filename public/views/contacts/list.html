@@ -3,12 +3,10 @@
 	<div class="row">
 	  <div class="col-lg-6">
 	    <div class="input-group">
-	     <ng-form>
+	     <form ng-submit="searchForContact()">
 	      <input type="text" class="form-control" ng-model="contactname" placeholder="Search for..." style="margin-top: 10px">
-	      <span class="input-group-btn">
-	        <button class="btn btn-success" ng-click="searchForContact()" type="button">Go!</button>
-	      </span>
-	     </ng-form> 
+	      <input type="submit" value="Submit">
+	     </form> 
 	    </div><!-- /input-group -->
 	  </div><!-- /.col-lg-6 -->
 	</div><!-- /.row -->

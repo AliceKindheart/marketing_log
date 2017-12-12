@@ -32,7 +32,7 @@ exports.contact = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     req.body.UserId = req.user.id;
-    console.log("req.body");
+    console.log("req.bodyJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ");
     console.log(req.body);
     var companyid;
     var foundcompany;
